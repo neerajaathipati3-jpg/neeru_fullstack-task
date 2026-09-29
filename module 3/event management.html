@@ -1,0 +1,340 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Event Management System</title>
+
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: #f2f4f7;
+      }
+
+      /* Header */
+      header {
+        background: #673ab7;
+        color: white;
+        text-align: center;
+        padding: 25px;
+      }
+
+      header h1 {
+        margin: 0;
+        font-size: 32px;
+      }
+
+      header p {
+        margin: 8px 0 0;
+      }
+
+      /* Main container */
+      .container {
+        width: 90%;
+        max-width: 1000px;
+        margin: 30px auto;
+      }
+
+      /* Form */
+      .form-box {
+        background: white;
+        padding: 25px;
+        border-radius: 12px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+      }
+
+      .form-box h2 {
+        color: #673ab7;
+        margin-top: 0;
+      }
+
+      .row {
+        display: flex;
+        gap: 20px;
+      }
+
+      .input-group {
+        flex: 1;
+        margin-bottom: 15px;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 6px;
+        font-weight: bold;
+      }
+
+      input,
+      select,
+      textarea {
+        width: 100%;
+        padding: 11px;
+        border: 1px solid #ccc;
+        border-radius: 7px;
+        font-size: 15px;
+      }
+
+      textarea {
+        height: 80px;
+        resize: none;
+      }
+
+      input:focus,
+      select:focus,
+      textarea:focus {
+        outline: none;
+        border-color: #673ab7;
+      }
+
+      .add-btn {
+        width: 100%;
+        padding: 13px;
+        background: #673ab7;
+        color: white;
+        border: none;
+        border-radius: 7px;
+        font-size: 17px;
+        cursor: pointer;
+      }
+
+      .add-btn:hover {
+        background: #512da8;
+      }
+
+      /* Events */
+      .events-title {
+        margin-top: 35px;
+        color: #333;
+      }
+
+      #eventList {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 20px;
+      }
+
+      .event-card {
+        background: white;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.12);
+        border-left: 5px solid #673ab7;
+      }
+
+      .event-card h3 {
+        margin-top: 0;
+        color: #673ab7;
+      }
+
+      .event-card p {
+        margin: 9px 0;
+        color: #555;
+      }
+
+      .delete-btn {
+        margin-top: 10px;
+        padding: 9px 15px;
+        background: #e53935;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+      }
+
+      .delete-btn:hover {
+        background: #c62828;
+      }
+
+      #message {
+        text-align: center;
+        margin-top: 15px;
+        font-weight: bold;
+      }
+
+      /* Mobile */
+      @media (max-width: 600px) {
+        .row {
+          flex-direction: column;
+          gap: 0;
+        }
+
+        .container {
+          width: 95%;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <header>
+      <h1>Event Management System</h1>
+      <p>Plan and manage your events easily</p>
+    </header>
+
+    <div class="container">
+      <!-- Event Form -->
+      <div class="form-box">
+        <h2>Create New Event</h2>
+
+        <form onsubmit="addEvent(event)">
+          <div class="row">
+            <div class="input-group">
+              <label>Event Name</label>
+              <input
+                type="text"
+                id="eventName"
+                placeholder="Enter event name"
+                required
+              />
+            </div>
+
+            <div class="input-group">
+              <label>Event Type</label>
+              <select id="eventType" required>
+                <option value="">Select Type</option>
+                <option value="College Event">College Event</option>
+                <option value="Workshop">Workshop</option>
+                <option value="Seminar">Seminar</option>
+                <option value="Birthday">Birthday</option>
+                <option value="Conference">Conference</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="input-group">
+              <label>Date</label>
+              <input type="date" id="eventDate" required />
+            </div>
+
+            <div class="input-group">
+              <label>Time</label>
+              <input type="time" id="eventTime" required />
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="input-group">
+              <label>Location</label>
+              <input
+                type="text"
+                id="location"
+                placeholder="Enter event location"
+                required
+              />
+            </div>
+
+            <div class="input-group">
+              <label>Organizer</label>
+              <input
+                type="text"
+                id="organizer"
+                placeholder="Enter organizer name"
+                required
+              />
+            </div>
+          </div>
+
+          <div class="input-group">
+            <label>Description</label>
+
+            <textarea
+              id="description"
+              placeholder="Enter event description"
+            ></textarea>
+          </div>
+
+          <button type="submit" class="add-btn">+ Add Event</button>
+        </form>
+
+        <div id="message"></div>
+      </div>
+
+      <!-- Event List -->
+
+      <h2 class="events-title">Upcoming Events</h2>
+
+      <div id="eventList">
+        <div class="event-card">
+          <h3>College Cultural Fest</h3>
+
+          <p>📅 15 October 2026</p>
+
+          <p>⏰ 10:00 AM</p>
+
+          <p>📍 College Auditorium</p>
+
+          <p>👤 Student Association</p>
+
+          <p>Annual college cultural program.</p>
+
+          <button class="delete-btn" onclick="this.parentElement.remove()">
+            Delete
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function addEvent(event) {
+        event.preventDefault();
+
+        let name = document.getElementById("eventName").value;
+
+        let type = document.getElementById("eventType").value;
+
+        let date = document.getElementById("eventDate").value;
+
+        let time = document.getElementById("eventTime").value;
+
+        let location = document.getElementById("location").value;
+
+        let organizer = document.getElementById("organizer").value;
+
+        let description = document.getElementById("description").value;
+
+        // Create event card
+        let eventCard = document.createElement("div");
+
+        eventCard.className = "event-card";
+
+        eventCard.innerHTML = `
+                <h3>${name}</h3>
+
+                <p>🎫 ${type}</p>
+
+                <p>📅 ${date}</p>
+
+                <p>⏰ ${time}</p>
+
+                <p>📍 ${location}</p>
+
+                <p>👤 ${organizer}</p>
+
+                <p>${description}</p>
+
+                <button
+                    class="delete-btn"
+                    onclick="this.parentElement.remove()">
+                    Delete
+                </button>
+            `;
+
+        document.getElementById("eventList").appendChild(eventCard);
+
+        // Success message
+        let message = document.getElementById("message");
+
+        message.style.color = "green";
+
+        message.innerHTML = "✓ Event added successfully!";
+
+        // Clear form
+        document.querySelector("form").reset();
+      }
+    </script>
+  </body>
+</html>
